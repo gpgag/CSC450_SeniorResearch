@@ -15,6 +15,18 @@ public class Mouse {
 	private int fitness = 0;
 	
 	//***************************************************
+	//Constructors										*
+	//***************************************************
+	public Mouse() {}
+	
+	public Mouse(int probUp, int probDown, int probLeft, int probRight) {
+		this.probUp = probUp;
+		this.probDown = probDown;
+		this.probLeft = probLeft;
+		this.probRight = probRight;
+	}
+	
+	//***************************************************
 	//Functions											*
 	//***************************************************
 	
@@ -39,6 +51,30 @@ public class Mouse {
 		System.out.println(totalProb);
 	}
 	
+	//This function checks if the total probability of movement is 100%,
+	//if not it will call the function to adjust
+	public boolean correctPercent() {
+		Random rand = new Random();
+		int totalProb = probUp + probDown + probLeft + probRight;
+		
+		if (totalProb < 100) {
+			
+			int mutate = rand.nextInt((4-1) + 1) + 1;
+			
+			if (mutate == 1)
+				probUp++;
+			else if (mutate == 2)
+				probDown++;
+			else if (mutate == 3)
+				probLeft++;
+			else if (mutate == 4)
+				probRight++;
+			
+			return false;
+		} else
+		return true;
+	}
+	
 	//***************************************************
 	//Getters & Setters									*
 	//***************************************************
@@ -53,26 +89,26 @@ public class Mouse {
 	
 	//probDown
 	public int getProbDown() {
-		return probUp;
+		return probDown;
 	}
 	public void setProbDown(int prob) {
-		probUp = prob;
+		probDown = prob;
 	}
 	
 	//probLeft
 	public int getProbLeft() {
-		return probUp;
+		return probLeft;
 	}
 	public void setProbLeft(int prob) {
-		probUp = prob;
+		probLeft = prob;
 	}
 
 	//probRight
 	public int getProbRight() {
-		return probUp;
+		return probRight;
 	}
 	public void setProbRight(int prob) {
-		probUp = prob;
+		probRight = prob;
 	}	
 	
 	//fitness
