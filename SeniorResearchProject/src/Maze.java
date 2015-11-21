@@ -5,22 +5,26 @@ public class Maze {
 	//***************************************************
 	//Variables											*				
 	//***************************************************
-	private static int SIZE = 5;
+	private static int SIZE = 10;
 	private static int START_X = 0;
 	private static int START_Y = 0;
-	private static int MAXIMUM_TOTAL_MOVES = 2147483647;
+	//private static int MAXIMUM_TOTAL_MOVES = 2147483647;
+	private static int MAXIMUM_TOTAL_MOVES = 1000000000;
+	
 	
 	private int positionX;
 	private int positionY;
 	private int nextMove;
 	private int totalMoves = 0;
+	private int negativeMoves = 0;
+	private int positiveMoves = 0;
 	
 	private int rangeUp;
 	private int rangeDown;
 	private int rangeLeft;
 	private int rangeRight;
 	
-	private boolean mazeComplete = false;
+	private boolean mazeComplete;
 
 	//***************************************************
 	//Constructors										*
@@ -30,20 +34,21 @@ public class Maze {
 	//***************************************************
 	//Functions											*
 	//***************************************************
-	public int runMaze(Mouse testMouse) {
+	public void runMaze(Mouse testMouse) {
 		Random rand = new Random();
 		
-		int positionX = 0;
-		int positionY = 0;
-		int nextMove = 0;
-		int totalMoves = 0;
+		//at the start initialize all variables
+		positionX = START_X;
+		positionY = START_Y;
+		nextMove = 0;
+		totalMoves = 0;
 		
-		int rangeUp = 0;
-		int rangeDown = 0;
-		int rangeLeft = 0;
-		int rangeRight = 0;
+		rangeUp = 0;
+		rangeDown = 0;
+		rangeLeft = 0;
+		rangeRight = 0;
 		
-		boolean mazeComplete = false;
+		mazeComplete = false;
 		
 		rangeUp = testMouse.getProbUp();
 		rangeDown = rangeUp + testMouse.getProbDown();
@@ -52,6 +57,9 @@ public class Maze {
 		
 		while (!mazeComplete && totalMoves < MAXIMUM_TOTAL_MOVES) {
 			nextMove = rand.nextInt((100 - 1) + 1) + 1;
+			
+			int oldX = positionX;
+			int oldY = positionY;
 			
 			//check if its up
 			if (nextMove <= rangeUp) {
@@ -82,10 +90,23 @@ public class Maze {
 				totalMoves++;
 			}	
 			
+			//test if the mouse moved away from the exit or towards it
+			if (oldX < positionX || oldY < positionY) {
+				negativeMoves++;
+			} else if (oldX > positionX || oldY > positionY) {
+				positiveMoves++;
+			}
+			
+			//test if the maze has been completed
 			if (positionX == SIZE && positionY == SIZE){
 				mazeComplete = true;
 			}
+			
+			
 		}
+		
+		//set the total moves to the mouse
+		testMouse.setTotalMoves(totalMoves);
 		
 		//test if the maze is finished to output a message
 		if (mazeComplete) {
@@ -97,6 +118,9 @@ public class Maze {
 		System.out.println("PositionX: " + positionX);
 		System.out.println("PositionY: " + positionY);
 		
-		return totalMoves;
+		System.out.println("Fitness: " + testMouse.getFitness());
+		
+		
+		return;
 	}
 }

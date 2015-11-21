@@ -1,4 +1,4 @@
-import java.util.Random;
+import java.util.Random; //for random range: random.nextInt((max - min) + 1) + min
 
 public class Mouse {
 
@@ -7,12 +7,10 @@ public class Mouse {
 	//***************************************************
 	private static int max = 100;
 	
-	private int probUp;
-	private int probDown;
-	private int probLeft;
-	private int probRight;	
+	private int[] moveProbs = new int[4];
 	
 	private int fitness = 0;
+	private int totalMoves;
 	
 	//***************************************************
 	//Constructors										*
@@ -20,10 +18,10 @@ public class Mouse {
 	public Mouse() {}
 	
 	public Mouse(int probUp, int probDown, int probLeft, int probRight) {
-		this.probUp = probUp;
-		this.probDown = probDown;
-		this.probLeft = probLeft;
-		this.probRight = probRight;
+		moveProbs[0] = probUp;
+		moveProbs[1] = probDown;
+		moveProbs[2] = probLeft;
+		moveProbs[3] = probRight;
 	}
 	
 	//***************************************************
@@ -34,41 +32,46 @@ public class Mouse {
 	public void generateMouse() {
 		Random rand = new Random();
 		
-		probUp = rand.nextInt((max -3) -1) + 1;
-		System.out.println(probUp);
-		probDown = rand.nextInt(((max - probUp) - 2) -1) + 1;
-		System.out.println(probDown);
-		probLeft = rand.nextInt((((max - probUp) - probDown) - 1)-1) + 1;
-		System.out.println(probLeft);
-		probRight = max - probUp - probDown - probLeft;
-		System.out.println(probRight);
-	}
+		//calculate 4 probabilities that total 100%
+		int[] probabilities = new int[4];
+		
+		probabilities[0] = rand.nextInt((max -3) -1) + 1;
+		probabilities[1] = rand.nextInt(((max - probabilities[0]) - 2) -1) + 1;
+		probabilities[2] = rand.nextInt((((max - probabilities[0]) - probabilities[1]) - 1)-1) + 1;
+		probabilities[3] = max - probabilities[0] - probabilities[1] - probabilities[2];
 	
-	//This function displays the total, used to test and ensure the total is 100
-	public void showTotalProb() {
-		int totalProb;
-		totalProb = probUp + probDown + probLeft + probRight;
-		System.out.println(totalProb);
+		int nextProb = rand.nextInt((3-0) + 1) + 0;
+		
+		//Assign the probabilities to the movements in a random order
+		for (int i = 0; i < moveProbs.length; i++) {
+			moveProbs[nextProb % moveProbs.length] = probabilities[i];
+			nextProb++;
+		}
+		
+		//outpute the four probabilities for testing
+		for (int i = 0; i < moveProbs.length; i++)
+			System.out.println(moveProbs[i]);
+		
 	}
 	
 	//This function checks if the total probability of movement is 100%,
 	//if not it will call the function to adjust
 	public boolean correctPercent() {
 		Random rand = new Random();
-		int totalProb = probUp + probDown + probLeft + probRight;
+		int totalProb = getTotalProb();
 		
 		if (totalProb < 100) {
 			
-			int mutate = rand.nextInt((4-1) + 1) + 1;
+			int slightMutate = rand.nextInt((3-0) + 1) + 0;
 			
-			if (mutate == 1)
-				probUp++;
-			else if (mutate == 2)
-				probDown++;
-			else if (mutate == 3)
-				probLeft++;
-			else if (mutate == 4)
-				probRight++;
+			if (slightMutate == 0)
+				moveProbs[slightMutate]++;
+			else if (slightMutate == 1)
+				moveProbs[slightMutate]++;
+			else if (slightMutate == 2)
+				moveProbs[slightMutate]++;
+			else if (slightMutate == 3)
+				moveProbs[slightMutate]++;
 			
 			return false;
 		} else
@@ -79,42 +82,65 @@ public class Mouse {
 	//Getters & Setters									*
 	//***************************************************
 	
+	//movementProbs
+	public int getProb(int index) {
+		return moveProbs[index];
+	}
+	public void setProb(int index,int prob) {
+		moveProbs[index] = prob;
+	}
+	
 	//probUp
 	public int getProbUp() {
-		return probUp;
+		return moveProbs[0];
 	}
 	public void setProbUp(int prob) {
-		probUp = prob;
+		moveProbs[0] = prob;
 	}
 	
 	//probDown
 	public int getProbDown() {
-		return probDown;
+		return moveProbs[1];
 	}
 	public void setProbDown(int prob) {
-		probDown = prob;
+		moveProbs[1] = prob;
 	}
 	
 	//probLeft
 	public int getProbLeft() {
-		return probLeft;
+		return moveProbs[2];
 	}
 	public void setProbLeft(int prob) {
-		probLeft = prob;
+		moveProbs[2] = prob;
 	}
 
 	//probRight
 	public int getProbRight() {
-		return probRight;
+		return moveProbs[3];
 	}
 	public void setProbRight(int prob) {
-		probRight = prob;
+		moveProbs[3] = prob;
 	}	
+	
+	//totalMoves
+	public int getTotalMoves() {
+		return totalMoves;
+	}
+	public void setTotalMoves(int moves) {
+		totalMoves = moves;
+	}	
+	
+	//This function displays the total, used to test and ensure the total is 100
+	public int getTotalProb() {
+		int totalProb;
+		totalProb = moveProbs[0] + moveProbs[1] + moveProbs[2] + moveProbs[3];
+		return totalProb;
+	}
 	
 	//fitness
 	public int getFitness() {
 		if (fitness == 0) {
-			//calculate fitness here
+			fitness = FitTest.getFitness(this);
 		}
 		
 		return fitness;

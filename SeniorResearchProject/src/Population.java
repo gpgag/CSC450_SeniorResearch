@@ -12,7 +12,7 @@ public class Population {
                 Mouse newMouse = new Mouse();
                 System.out.println("Mouse #" + i);
                 newMouse.generateMouse();
-                newMouse.showTotalProb();
+                System.out.println(newMouse.getTotalProb());
                 saveMouse(i, newMouse);
 			}
 		}
@@ -69,7 +69,7 @@ public class Population {
 		System.out.println(child.getProbDown());
 		System.out.println(child.getProbLeft());
 		System.out.println(child.getProbRight());
-		child.showTotalProb();
+		System.out.println(child.getTotalProb());
 		
 		return child;
 	}
