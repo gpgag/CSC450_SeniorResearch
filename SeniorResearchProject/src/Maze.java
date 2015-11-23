@@ -5,19 +5,16 @@ public class Maze {
 	//***************************************************
 	//Variables											*				
 	//***************************************************
-	private static int SIZE = 10;
-	private static int START_X = 0;
-	private static int START_Y = 0;
-	//private static int MAXIMUM_TOTAL_MOVES = 2147483647;
-	private static int MAXIMUM_TOTAL_MOVES = 1000000000;
-	
+	private static final int SIZE = 10;
+	private static final int START_X = 0;
+	private static final int START_Y = 0;
+	//private static final int MAXIMUM_TOTAL_MOVES = 2147483647;
+	private static final int MAXIMUM_TOTAL_MOVES = 1000000;
 	
 	private int positionX;
 	private int positionY;
 	private int nextMove;
 	private int totalMoves = 0;
-	private int negativeMoves = 0;
-	private int positiveMoves = 0;
 	
 	private int rangeUp;
 	private int rangeDown;
@@ -34,6 +31,8 @@ public class Maze {
 	//***************************************************
 	//Functions											*
 	//***************************************************
+	
+	//this function runs a mouse through the maze
 	public void runMaze(Mouse testMouse) {
 		Random rand = new Random();
 		
@@ -90,13 +89,6 @@ public class Maze {
 				totalMoves++;
 			}	
 			
-			//test if the mouse moved away from the exit or towards it
-			if (oldX < positionX || oldY < positionY) {
-				negativeMoves++;
-			} else if (oldX > positionX || oldY > positionY) {
-				positiveMoves++;
-			}
-			
 			//test if the maze has been completed
 			if (positionX == SIZE && positionY == SIZE){
 				mazeComplete = true;
@@ -108,17 +100,15 @@ public class Maze {
 		//set the total moves to the mouse
 		testMouse.setTotalMoves(totalMoves);
 		
-		//test if the maze is finished to output a message
+		/*//test if the maze is finished to output a message
 		if (mazeComplete) {
 			System.out.println("Maze Completed in " + totalMoves + " Moves!!!");
 		} else if (totalMoves == MAXIMUM_TOTAL_MOVES) {
 			System.out.println("Maze Incomplete at " + totalMoves + " Moves...");
 		}
-			
 		System.out.println("PositionX: " + positionX);
 		System.out.println("PositionY: " + positionY);
-		
-		System.out.println("Fitness: " + testMouse.getFitness());
+		System.out.println("Fitness: " + testMouse.getFitness());*/
 		
 		
 		return;

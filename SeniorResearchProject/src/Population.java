@@ -1,8 +1,14 @@
 
 public class Population {
 
+	//***************************************************
+	//Variables											*				
+	//***************************************************
 	Mouse[] mice;
 
+	//***************************************************
+	//Constructors										*
+	//***************************************************
 	public Population(int numMice, boolean initialize) {
 		mice = new Mouse[numMice];
 
@@ -10,16 +16,22 @@ public class Population {
 			
 			for (int i = 0; i < size(); i++) {
                 Mouse newMouse = new Mouse();
-                System.out.println("Mouse #" + i);
+                //System.out.println("Mouse #" + i);
                 newMouse.generateMouse();
-                System.out.println(newMouse.getTotalProb());
+                //System.out.println(newMouse.getTotalProb());
                 saveMouse(i, newMouse);
 			}
 		}
 	}
-	// Getters 
+
+	//***************************************************
+	//Getters & Setters									*
+	//***************************************************
     public Mouse getMouse(int index) {
         return mice[index];
+    }
+    public void setMouse(int index, Mouse mouse) {
+    	mice[index] = mouse;
     }
 
     public Mouse getFittest() {
@@ -33,44 +45,51 @@ public class Population {
         return fittest;
     }
 
-    // Save individual
-    public void saveMouse(int index, Mouse mouse) {
-        mice[index] = mouse;
-    }
-
     //returns the size of the population
 	public int size() {
 		return mice.length;
 	}
 	
-	//This function breeds two mice together to create a single child
-	public Mouse breedMice(int momIndex, int dadIndex) {
+	//This function returns an average for total moves across the population
+    public int getAverageTotalMoves() {
+    	int aveTotMove = 0;
+    	
+    	for (int i = 0; i < size(); i++) {
+    		aveTotMove += Math.abs(getMouse(i).getTotalMoves());
+    	}
+    	
+    	aveTotMove = aveTotMove / size();
+    	
+    	return aveTotMove;
+    }
+	
+	//***************************************************
+	//Functions											*
+	//***************************************************
+	
+	 // Save individual
+    public void saveMouse(int index, Mouse mouse) {
+        mice[index] = mouse;
+    }
+	
+	//this is a function to sort the population based on total moves
+	public void sortPopByMoves(Population pop) {
+		int i;
+		boolean flag = true;
+		Mouse temp;
 		
-		int momUp = mice[momIndex].getProbUp();
-		int momDown = mice[momIndex].getProbDown();
-		int momLeft = mice[momIndex].getProbLeft();
-		int momRight = mice[momIndex].getProbRight();
-		
-		int dadUp = mice[dadIndex].getProbUp();
-		int dadDown = mice[dadIndex].getProbDown();
-		int dadLeft = mice[dadIndex].getProbLeft();
-		int dadRight = mice[dadIndex].getProbRight();
-		
-		
-		Mouse child = new Mouse(((momUp + dadUp)/2), ((momDown + dadDown)/2), ((momLeft + dadLeft)/2), ((momRight + dadRight)/2));
-		
-		boolean done = false;
-		
-		while (done == false) {
-			done = child.correctPercent();
+		//perform a bubble sort
+		while(flag) {
+			flag = false;
+			for (i = 0; i < pop.size() - 1; i++) {
+				
+				if(pop.getMouse(i).getTotalMoves() > pop.getMouse(i+1).getTotalMoves()) {
+					temp = pop.getMouse(i);
+					pop.setMouse(i, pop.getMouse(i+1));;
+					pop.setMouse(i+1, temp);
+					flag = true;
+				}
+			}
 		}
-		
-		System.out.println(child.getProbUp());
-		System.out.println(child.getProbDown());
-		System.out.println(child.getProbLeft());
-		System.out.println(child.getProbRight());
-		System.out.println(child.getTotalProb());
-		
-		return child;
 	}
 }

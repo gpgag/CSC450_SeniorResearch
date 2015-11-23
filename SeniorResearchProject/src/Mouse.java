@@ -48,9 +48,9 @@ public class Mouse {
 			nextProb++;
 		}
 		
-		//outpute the four probabilities for testing
+		/*//outpute the four probabilities for testing
 		for (int i = 0; i < moveProbs.length; i++)
-			System.out.println(moveProbs[i]);
+			System.out.println(moveProbs[i]);*/
 		
 	}
 	
@@ -76,6 +76,28 @@ public class Mouse {
 			return false;
 		} else
 		return true;
+	}
+	
+	//this function redistributes probabilities back to 100 percent
+	public void redistributeProbs() {
+		int totalProb = getTotalProb();
+		
+		setProbUp(getProbUp() / totalProb);
+		setProbDown(getProbDown() / totalProb);
+		setProbLeft(getProbLeft() / totalProb);
+		setProbRight(getProbRight() / totalProb);
+		
+		//probability may not total 100, repeat this loop till it does
+		boolean done = false;
+		while (done == false) {
+			done = correctPercent();
+		}
+	}
+	
+	//this function prints the 4 probabilities
+	public void printProbs() {
+		for (int i = 0; i < moveProbs.length; i++)
+			System.out.println(moveProbs[i]);
 	}
 	
 	//***************************************************
