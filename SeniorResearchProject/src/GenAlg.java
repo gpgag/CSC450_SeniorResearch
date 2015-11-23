@@ -10,7 +10,7 @@ public class GenAlg {
 	private static final double mutateRate = 0.015;
 	private static final int maxMutate = 50;
 	private static final int minMutate = 10;
-	private static final boolean saveBest = false;
+	private static final boolean saveBest = true;
 	
 	//***************************************************
 	//Functions											*
@@ -73,7 +73,8 @@ public class GenAlg {
 		int dadRight = dadMouse.getProbRight();
 		
 		//create the child
-		Mouse child = new Mouse(((momUp + dadUp)/2), ((momDown + dadDown)/2), ((momLeft + dadLeft)/2), ((momRight + dadRight)/2));
+		Mouse child = new Mouse(((momUp + dadUp)/2), ((momDown + dadDown)/2), 
+				((momLeft + dadLeft)/2), ((momRight + dadRight)/2));
 		
 		//probability may not total 100, repeat this loop till it does
 		boolean done = false;
@@ -101,7 +102,8 @@ public class GenAlg {
 			
 			//mutate rate is the probability of mutation
 			if (Math.random() <= mutateRate) {
-				mouse.setProb(i, mouse.getProb(i) + rand.nextInt(((maxMutate - minMutate) + 1) + minMutate));
+				mouse.setProb(i, mouse.getProb(i) + 
+						rand.nextInt(((maxMutate - minMutate) + 1) + minMutate));
 			}
 		}
 		

@@ -74,8 +74,28 @@ public class Mouse {
 				moveProbs[slightMutate]++;
 			
 			return false;
-		} else
-		return true;
+			
+		} else if (totalProb > 100) {
+			
+			int slightMutate = rand.nextInt((3-0) + 1) + 0;
+			
+			if (slightMutate == 0)
+				moveProbs[slightMutate]--;
+			else if (slightMutate == 1)
+				moveProbs[slightMutate]--;
+			else if (slightMutate == 2)
+				moveProbs[slightMutate]--;
+			else if (slightMutate == 3)
+				moveProbs[slightMutate]--;
+			
+			return false;
+			
+		} else if (totalProb == 100) {
+			return true;
+		}
+		
+		return false;
+		
 	}
 	
 	//this function redistributes probabilities back to 100 percent

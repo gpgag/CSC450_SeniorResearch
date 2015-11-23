@@ -111,7 +111,8 @@ public class Simulation {
 		System.out.println("Best Average Number of Moves");
 		System.out.println("Generation: " + bestGenMove1 + " Moves: " + bestMove1);
 		System.out.println("Best Mouse");
-		System.out.println("Fitness: " + bestMouse1.getFitness() + " Moves: " + bestMouse1.getTotalMoves());
+		System.out.println("Fitness: " + bestMouse1.getFitness() + " Moves: " + 
+				bestMouse1.getTotalMoves());
 		bestMouse1.printProbs();
 		
 		System.out.println();
@@ -122,7 +123,8 @@ public class Simulation {
 		System.out.println("Best Average Number of Moves");
 		System.out.println("Generation: " + bestGenMove2 + " Moves: " + bestMove2);
 		System.out.println("Best Mouse");
-		System.out.println("Fitness: " + bestMouse2.getFitness() + " Moves: " + bestMouse2.getTotalMoves());
+		System.out.println("Fitness: " + bestMouse2.getFitness() + " Moves: " + 
+				bestMouse2.getTotalMoves());
 		bestMouse2.printProbs();
 		System.out.println();
 	}
