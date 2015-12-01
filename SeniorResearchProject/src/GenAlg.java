@@ -117,7 +117,7 @@ public class GenAlg {
 		pop.sortPopByMoves(pop);
 		
 		//randomly pick one mouse out of top group based on tournament size
-		return pop.getMouse(rand.nextInt(((tournamentSize - 1) + 0) + 1) + 0);
+		return pop.getMouse(rand.nextInt((((tournamentSize/2) - 1) + 0) + 1) + 0);
 	}
 	
 	//proportional selection: tournament selection
