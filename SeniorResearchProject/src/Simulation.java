@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 public class Simulation {
 
@@ -11,10 +16,13 @@ public class Simulation {
 		//***************************************************
 		final int POPULATION_SIZE = 100;
 		final int GENERATION_AMOUNT = 400;
-		final int NUMBER_OF_TRIALS = 500;
+		final int NUMBER_OF_TRIALS = 1000;
 		
 		double[] results1 = new double[NUMBER_OF_TRIALS];
 		double[] results2 = new double[NUMBER_OF_TRIALS];
+		
+		double[] fitResults1 = new double[NUMBER_OF_TRIALS];
+		double[] fitResults2 = new double[NUMBER_OF_TRIALS];
 		
 		Maze maze = new Maze();
 		
@@ -117,10 +125,12 @@ public class Simulation {
 			//Adding trial results to total results				*				
 			//***************************************************
 			results1[i] = bestGenFit1;
+			fitResults1[i] = bestFit1;
 			aveBestGen1 += bestGenFit1;
 			aveBestFit1 += bestFit1;
 			
 			results2[i] = bestGenFit2;
+			fitResults2[i] = bestFit2;
 			aveBestGen2 += bestGenFit2;
 			aveBestFit2 += bestFit2;
 			
@@ -155,6 +165,47 @@ public class Simulation {
 		System.out.println("Average Best Generation");
 		System.out.println("Generation: " + aveBestGen2 + " Standard Deviation: " + std2);
 		System.out.println();
+		
+		try(Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream("GenAlgOutput.txt"), "utf-8"))) {
+			System.out.println("Writing Ordinal Data");
+			writer.write("Ordinal Gen Data\r\n");
+			for(int j = 0; j < results1.length; j++) {
+				writer.write(Double.toString(results1[j]));
+				if (j < results1.length - 1) {
+					writer.write(", ");
+				}
+			}
+			
+			writer.write("\r\n\r\nOrdinal Fit Data\r\n");
+			for(int j = 0; j < fitResults1.length; j++) {
+				writer.write(Double.toString(fitResults1[j]));
+				if (j < fitResults1.length - 1) {
+					writer.write(", ");
+				}
+			}
+			
+			System.out.println("Completed Writing Ordinal Data");
+			System.out.println("Writing Proportional Data");
+			writer.write("\r\n\r\nProportional Gen Data\r\n");
+			for(int j = 0; j < results2.length; j++) {
+				writer.write(Double.toString(results2[j]));
+				if (j < results2.length - 1) {
+					writer.write(", ");
+				}
+			}
+			
+			writer.write("\r\n\r\nProportional Fit Data\r\n");
+			for(int j = 0; j < fitResults2.length; j++) {
+				writer.write(Double.toString(fitResults2[j]));
+				if (j < fitResults2.length - 1) {
+					writer.write(", ");
+				}
+			}
+			System.out.println("Completed Writing Proportional Data");
+		} catch (IOException ex) {
+			System.out.println("Error writing output");
+		} 
 	}
 	
 	//standard deviation calculating function
